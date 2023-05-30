@@ -1,0 +1,23 @@
+{
+  "name": "react-cli-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Justonice2019/react-cli-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Justonice2019/react-cli-server/issues"
+  },
+  "homepage": "https://github.com/Justonice2019/react-cli-server#readme",
+  "dependencies": {
+    "react-dev-utils": "^12.0.1"
+  },
+  "bin": {
+    "react-cli-server": "./bin/react-cli-server.js"
+  }
+}
