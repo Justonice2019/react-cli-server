@@ -1,6 +1,6 @@
 {
   "name": "react-cli-server",
-  "version": "1.0.0",
+  "version": "1.0.001",
   "description": "",
   "repository": {
     "type": "git",
@@ -28,5 +28,9 @@
   },
   "bin": {
     "react-cli-server": "./bin/react-cli-server.js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
