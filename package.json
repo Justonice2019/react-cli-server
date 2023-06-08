@@ -1,18 +1,26 @@
 {
   "name": "@justonice/react-cli-server",
-  "version": "1.0.002",
-  "description": "",
+  "version": "1.0.02",
+  "description": "justonice的React server 工具",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Justonice2019/react-cli-server.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "react",
+    "cli",
+    "justonice",
+    "react-cli-server"
+  ],
+  "author": "justonice",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Justonice2019/react-cli-server/issues"
   },
   "homepage": "https://github.com/Justonice2019/react-cli-server#readme",
+  "bin": {
+    "react-cli-server": "./bin/react-cli-server.js"
+  },
   "dependencies": {
     "babel-loader": "^9.1.2",
     "chalk": "~4.1.2",
@@ -25,9 +33,6 @@
     "webpack": "^5.84.1",
     "webpack-dev-server": "^4.15.0",
     "webpack-merge": "^5.9.0"
-  },
-  "bin": {
-    "react-cli-server": "./bin/react-cli-server.js"
   },
   "publishConfig": {
     "access": "public",
