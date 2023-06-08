@@ -2,7 +2,6 @@
   "name": "react-cli-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Justonice2019/react-cli-server.git"
@@ -15,7 +14,17 @@
   },
   "homepage": "https://github.com/Justonice2019/react-cli-server#readme",
   "dependencies": {
-    "react-dev-utils": "^12.0.1"
+    "babel-loader": "^9.1.2",
+    "chalk": "~4.1.2",
+    "commander": "~10.0.1",
+    "execa": "~5.1.1",
+    "fs-extra": "~11.1.1",
+    "html-webpack-plugin": "^5.5.1",
+    "react-dev-utils": "^12.0.1",
+    "react-refresh": "^0.14.0",
+    "webpack": "^5.84.1",
+    "webpack-dev-server": "^4.15.0",
+    "webpack-merge": "^5.9.0"
   },
   "bin": {
     "react-cli-server": "./bin/react-cli-server.js"
