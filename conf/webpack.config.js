@@ -3,17 +3,18 @@ const os = require('os');
 const fs = require('fs');
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const ESLintPlugin = require('eslint-webpack-plugin')
-// const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
-// const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin')
+const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const WorkboxPlugin = require('workbox-webpack-plugin');
-// const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-// const TerserWebpackPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 // const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
-// const threads = os.cpus().length;
+const threads = os.cpus().length;
 const isProduction = process.env.NODE_ENV === 'production';
+const tools = require('../scripts/utils/tools')
 
 // const makePlugins = () => {
 //   const plugins = []
@@ -40,20 +41,7 @@ const getStyleLoaders = pre => {
     isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
     'css-loader',
     'postcss-loader',
-    pre && {
-      loader: pre,
-      options:
-          pre === 'less-loader'
-              ? {
-
-
-                lessOptions: {
-                  modifyVars: { '@primary-color': '#1DA57A' },
-                  javascriptEnabled: true,
-                },
-              }
-              : {},
-    },
+    pre
   ].filter(Boolean)
 }
 
@@ -71,12 +59,6 @@ module.exports = function (options = {}) {
     },
     mode: isProduction ? 'production' : 'development',
     devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
-    // devServer: {
-    //   host: 'localhost',
-    //   port: '3009',
-    //   hot: true,
-    //   historyApiFallback: true,
-    // },
     resolve: {
       extensions: ['.jsx', '.js', '.json']
     },
@@ -84,48 +66,48 @@ module.exports = function (options = {}) {
       rules: [
         {
           oneOf: [
-            // {
-            //   test: /\.css$/i,
-            //   use: getStyleLoaders()
-            // },
-            // {
-            //   test: /\.less$/i,
-            //   use: getStyleLoaders('less-loader')
-            // },
-            // {
-            //   test: /\.s[ac]ss$/i,
-            //   use: getStyleLoaders('sass-loader')
-            // },
-            // {
-            //   test: /\.styl$/i,
-            //   use: getStyleLoaders('stylus-loader')
-            // },
-            // {
-            //   test: /\.(png|jpe?g|gif|svg)$/i,
-            //   type: 'asset',
-            //   parser: {
-            //     dataUrlCondition: {
-            //       maxSize: 8 * 1024
-            //     }
-            //   },
-            // },
-            // {
-            //   test: /\.txt$/i,
-            //   type: 'asset/source'
-            // },
-            // {
-            //   test: /\.(woff2?|ttf)$/,
-            //   type: 'asset/resource',
-            // },
+            {
+              test: /\.css$/i,
+              use: getStyleLoaders()
+            },
+            {
+              test: /\.less$/i,
+              use: getStyleLoaders('less-loader')
+            },
+            {
+              test: /\.s[ac]ss$/i,
+              use: getStyleLoaders('sass-loader')
+            },
+            {
+              test: /\.styl$/i,
+              use: getStyleLoaders('stylus-loader')
+            },
+            {
+              test: /\.(png|jpe?g|gif|svg)$/i,
+              type: 'asset',
+              parser: {
+                dataUrlCondition: {
+                  maxSize: 8 * 1024
+                }
+              },
+            },
+            {
+              test: /\.txt$/i,
+              type: 'asset/source'
+            },
+            {
+              test: /\.(woff2?|ttf)$/,
+              type: 'asset/resource',
+            },
             {
               test: /\.jsx?$/,
               use: [
-                // {
-                //   loader: 'thread-loader',
-                //   options: {
-                //     works: threads,
-                //   },
-                // },
+                {
+                  loader: 'thread-loader',
+                  options: {
+                    works: threads,
+                  },
+                },
                 {
                   loader: 'babel-loader',
                   options: {
@@ -145,92 +127,90 @@ module.exports = function (options = {}) {
         filename: 'index.html',
         title: options.title || 'react-app',
         template: path.resolve(__dirname, '../template/index.ejs'),
-        // beforeReactDOM: options.beforeReactDOM
       }),
-      // isProduction && new MiniCssExtractPlugin({
-      //   filename: 'styles/[name].[contenthash:10].css',
-      //   chunkFilename: 'styles/[name].chunk.[contenthash:10].css',
-      // }),
-      // !isProduction && new ESLintPlugin({
-      //   context: path.resolve(__dirname, '../src'),
-      //   exclude: 'node_modules',
-      //   cache: true,
-      //   cacheLocation: path.resolve(
-      //       __dirname,
-      //       '../node_modules/.cache/eslint-webpack-plugin/.eslintcache'
-      //   ),
-      //   threads
-      // }),
-      // new PreloadWebpackPlugin({
-      //
-      //   rel: 'prefetch',
-      // }),
-      // !isProduction && new ReactRefreshWebpackPlugin(),
-      // isProduction && new WorkboxPlugin.GenerateSW({
-      //   clientsClaim: true,
-      //   skipWaiting: true,
-      // }),
-      // new CopyWebpackPlugin({
-      //   patterns: [
-      //     {
-      //       from: path.resolve(__dirname, '../public'),
-      //       to: path.resolve(__dirname, '../dist'),
-      //       globOptions: {
-      //         ignore: ['**/index.html'],
-      //       },
-      //     },
-      //   ],
-      // }),
+      isProduction && new MiniCssExtractPlugin({
+        filename: 'styles/[name].[contenthash:10].css',
+        chunkFilename: 'styles/[name].chunk.[contenthash:10].css',
+      }),
+      !isProduction && new ESLintPlugin({
+        context: path.resolve(tools.cwd, './src'),
+        exclude: 'node_modules',
+        cache: true,
+        cacheLocation: path.resolve(
+            tools.cwd,
+            './node_modules/.cache/eslint-webpack-plugin/.eslintcache'
+        ),
+        threads
+      }),
+      new PreloadWebpackPlugin({
+        rel: 'prefetch',
+      }),
+      !isProduction && new ReactRefreshWebpackPlugin(),
+      isProduction && new WorkboxPlugin.GenerateSW({
+        clientsClaim: true,
+        skipWaiting: true,
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(tools.cwd, './public'),
+            to: path.resolve(tools.cwd, './dist'),
+            globOptions: {
+              ignore: ['**/index.html', '**/index.ejs'],
+            },
+          },
+        ],
+      }),
     // ].filter(Boolean).concat(makePlugins()),
     ].filter(Boolean),
-    // optimization: {
-    //   splitChunks: {
-    //     chunks: 'all',
-    //     minSize: 20000,
-    //     minRemainingSize: 0,
-    //     minChunks: 1,
-    //     maxAsyncRequests: 30,
-    //     maxInitialRequests: 30,
-    //     enforceSizeThreshold: 50000,
-    //     cacheGroups: {
-    //       vendors: {
-    //         test: /[\\/]node_modules[\\/]/,
-    //         priority: -10,
-    //         reuseExistingChunk: true,
-    //         name: 'vendors',
-    //         filename: 'js/[name].chunk.[contenthash:10].js'
-    //       },
-    //       default: {
-    //         minChunks: 2,
-    //         priority: -20,
-    //         reuseExistingChunk: true,
-    //       },
-    //       react: {
-    //         test: /[\\/]node_modules[\\/]react(.*)?[\\/]/,
-    //         name: 'react',
-    //         priority: 40,
-    //         filename: 'js/[name].chunk.[contenthash:10].js'
-    //       },
-    //
-    //       antd: {
-    //         test: /[\\/]node_modules[\\/]antd[\\/]/,
-    //         name: 'antd',
-    //         priority: 30,
-    //         filename: 'js/[name].chunk.[contenthash:10].js'
-    //       },
-    //     }
-    //   },
-    //   minimize: isProduction,
-    //   minimizer: [
-    //     new CssMinimizerPlugin(),
-    //     new TerserWebpackPlugin({
-    //       parallel: threads,
-    //     }),
-    //   ],
-    //   runtimeChunk: {
-    //     name: (entrypoint) => `runtime~${entrypoint.name}.js`,
-    //   },
-    // },
-    // performance: false
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        minSize: 20000,
+        minRemainingSize: 0,
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        enforceSizeThreshold: 50000,
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            reuseExistingChunk: true,
+            name: 'vendors',
+            filename: 'js/[name].chunk.[contenthash:10].js'
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
+          react: {
+            test: /[\\/]node_modules[\\/]react(.*)?[\\/]/,
+            name: 'react',
+            priority: 40,
+            filename: 'js/[name].chunk.[contenthash:10].js'
+          },
+          //
+          // antd: {
+          //   test: /[\\/]node_modules[\\/]antd[\\/]/,
+          //   name: 'antd',
+          //   priority: 30,
+          //   filename: 'js/[name].chunk.[contenthash:10].js'
+          // },
+        }
+      },
+      minimize: isProduction,
+      minimizer: [
+        new CssMinimizerPlugin(),
+        new TerserWebpackPlugin({
+          parallel: threads,
+        }),
+      ],
+      runtimeChunk: {
+        name: (entrypoint) => `runtime~${entrypoint.name}.js`,
+      },
+    },
+    performance: false
   }
 }
