@@ -45,7 +45,9 @@ const getStyleLoaders = pre => {
   ].filter(Boolean)
 }
 
+
 module.exports = function (options = {}) {
+  const template = options.template ? path.resolve(tools.cwd, options.template) : path.resolve(__dirname, '../template/index.ejs')
   return {
     entry: {
       main: options.entry,
@@ -126,7 +128,7 @@ module.exports = function (options = {}) {
       new HtmlWebpackPlugin({
         filename: 'index.html',
         title: options.title || 'react-app',
-        template: path.resolve(__dirname, '../template/index.ejs'),
+        template,
       }),
       isProduction && new MiniCssExtractPlugin({
         filename: 'styles/[name].[contenthash:10].css',

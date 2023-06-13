@@ -24,7 +24,8 @@ try{
   } = tools.getConfig(configPath);
 
   const options = {
-    entry: compileConfig.entry
+    entry: compileConfig.entry,
+    template: compileConfig.template
   };
 
   const webpackDefaultConfig = require('../conf/webpack.config')(options);
@@ -39,6 +40,16 @@ try{
   const serverOptions = {
     static: {
       publicPath: url,
+    },
+    setupMiddlewares: (middlewares, devServer) => {
+      if (!devServer) {
+        throw new Error('webpack-dev-server is not defined');
+      }
+      if (compileConfig.api) {
+        const handler = require(path.join(tools.cwd, compileConfig.api))
+        handler(middlewares, devServer)
+      }
+      return middlewares;
     },
     ...devConfig,
   };
