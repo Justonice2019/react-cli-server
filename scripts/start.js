@@ -47,7 +47,7 @@ try{
       }
       if (compileConfig.api) {
         const handler = require(path.join(tools.cwd, compileConfig.api))
-        handler(middlewares, devServer)
+        return handler(middlewares, devServer)
       }
       return middlewares;
     },
