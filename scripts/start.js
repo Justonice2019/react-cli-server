@@ -5,14 +5,13 @@ const webpackMerge = require('webpack-merge');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const tools = require('./utils/tools');
+const {
+  DEV
+} = require('./utils/env');
 
 process.env.NODE_ENV = 'development'
 
 try{
-  const {
-    DEV
-  } = require('./utils/env');
-
   const {
     config: configPath,
     webpack: webpackConfigPath
