@@ -1,41 +1,19 @@
 const path = require('path')
 const os = require('os');
-const fs = require('fs');
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const WorkboxPlugin = require('workbox-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-// const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
+
 const threads = os.cpus().length;
 const isProduction = process.env.NODE_ENV === 'production';
 const tools = require('../scripts/utils/tools')
 
-// const makePlugins = () => {
-//   const plugins = []
-//   if (!isProduction) return plugins
-//   const files = fs.readdirSync(path.resolve(__dirname, '../dll'))
-//   files.forEach(file => {
-//     if (/.*\.dll.js$/.test(file)) {
-//       plugins.push(new AddAssetHtmlWebpackPlugin({
-//         filepath: path.resolve(__dirname, '../dll/', file),
-//         publicPath: './'
-//       }))
-//     }
-//     if (/.*\.manifest.json$/.test(file)) {
-//       plugins.push(new webpack.DllReferencePlugin({
-//         manifest: require(`../dll/${file}`)
-//       }))
-//     }
-//   })
-//   return plugins
-// }
-//
 const getStyleLoaders = pre => {
   return [
     isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
@@ -163,7 +141,6 @@ module.exports = function (options = {}) {
           },
         ],
       }),
-    // ].filter(Boolean).concat(makePlugins()),
     ].filter(Boolean),
     optimization: {
       splitChunks: {
@@ -193,13 +170,6 @@ module.exports = function (options = {}) {
             priority: 40,
             filename: 'js/[name].chunk.[contenthash:10].js'
           },
-          //
-          // antd: {
-          //   test: /[\\/]node_modules[\\/]antd[\\/]/,
-          //   name: 'antd',
-          //   priority: 30,
-          //   filename: 'js/[name].chunk.[contenthash:10].js'
-          // },
         }
       },
       minimize: isProduction,

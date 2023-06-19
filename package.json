@@ -1,6 +1,6 @@
 {
   "name": "@justonice/react-cli-server",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "justonice的React server 工具",
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0-placeholder-for-preset-env.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@vue/preload-webpack-plugin": "^2.0.0",
+    "add-asset-html-webpack-plugin": "^6.0.0",
     "babel-loader": "^9.1.2",
     "babel-preset-react-app": "^10.0.1",
     "chalk": "~4.1.2",
@@ -55,7 +56,8 @@
     "thread-loader": "^4.0.2",
     "webpack": "^5.84.1",
     "webpack-dev-server": "^4.15.0",
-    "webpack-merge": "^5.9.0"
+    "webpack-merge": "^5.9.0",
+    "workbox-webpack-plugin": "^7.0.0"
   },
   "publishConfig": {
     "access": "public",

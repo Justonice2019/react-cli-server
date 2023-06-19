@@ -25,7 +25,7 @@ try{
 
   const options = {
     entry: compileConfig.entry,
-    template: compileConfig.template
+    template: compileConfig.template,
   };
 
   const webpackDefaultConfig = require('../conf/webpack.config')(options);
@@ -47,7 +47,7 @@ try{
       }
       if (compileConfig.api) {
         const handler = require(path.join(tools.cwd, compileConfig.api))
-        return handler(middlewares, devServer)
+        return handler(middlewares, devServer, compileConfig)
       }
       return middlewares;
     },
