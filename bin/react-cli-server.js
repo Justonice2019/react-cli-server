@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// 'use strict';
 const execa = require('execa')
 const args = process.argv.slice(2);
 const scriptIndex = args.findIndex(

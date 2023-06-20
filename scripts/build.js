@@ -3,25 +3,19 @@ const fs = require('fs-extra');
 const chalk = require('chalk');
 const webpackMerge = require('webpack-merge');
 const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
 const tools = require('./utils/tools');
 const {
   PROD
 } = require('./utils/env');
-
 process.env.NODE_ENV = 'production'
-
 try{
-
-
   const {
     config: configPath,
     webpack: webpackConfigPath
-  } = tools.getCmdParams(DEV);
+  } = tools.getCmdParams(PROD);
 
   const {
     compile: compileConfig,
-    dev: devConfig,
   } = tools.getConfig(configPath);
 
   const options = {
@@ -36,30 +30,20 @@ try{
   if (fs.existsSync(path.join(tools.cwd, webpackConfigPath))) {
     webpackConfig = webpackMerge.merge(webpackDefaultConfig, require(path.join(tools.cwd, webpackConfigPath)))
   }
-
-  const url = `http://${devConfig.host}:${devConfig.port}`;
-  const serverOptions = {
-    static: {
-      publicPath: url,
-    },
-    setupMiddlewares: (middlewares, devServer) => {
-      if (!devServer) {
-        throw new Error('webpack-dev-server is not defined');
-      }
-      if (compileConfig.api) {
-        const handler = require(path.join(tools.cwd, compileConfig.api))
-        return handler(middlewares, devServer, compileConfig)
-      }
-      return middlewares;
-    },
-    ...devConfig,
-  };
-
-  const devServer = new WebpackDevServer(serverOptions, webpack(webpackConfig));
-
-  devServer.listen(devConfig.port, devConfig.host, () => {
-    console.log(chalk.green(`Server started on http://${devConfig.host}:${devConfig.port}, Please wait while webpack compiling modules...`));
-  });
+  webpack(webpackConfig, (err, stats) => {
+    if(err) {
+      console.log(chalk.red(err.details || err));
+      process.exit(1);
+    }
+    const info = stats.toJson('verbose');
+    if(stats.hasWarnings())
+      console.log(chalk.yellow(info.warnings.join('\n')));
+    if(stats.hasErrors()) {
+      console.log(chalk.red(info.errors.join('\n')));
+      process.exit(1);
+    }
+    console.log(chalk.green(' - publicPath:'), info.publicPath);
+  })
 } catch(ex) {
   console.log(chalk.red(ex));
   process.exit(1);

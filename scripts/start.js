@@ -8,9 +8,7 @@ const tools = require('./utils/tools');
 const {
   DEV
 } = require('./utils/env');
-
 process.env.NODE_ENV = 'development'
-
 try{
   const {
     config: configPath,
@@ -26,19 +24,18 @@ try{
     entry: compileConfig.entry,
     template: compileConfig.template,
   };
-
   const webpackDefaultConfig = require('../conf/webpack.config')(options);
-
   let webpackConfig = webpackDefaultConfig;
-
   if (fs.existsSync(path.join(tools.cwd, webpackConfigPath))) {
     webpackConfig = webpackMerge.merge(webpackDefaultConfig, require(path.join(tools.cwd, webpackConfigPath)))
   }
-
   const url = `http://${devConfig.host}:${devConfig.port}`;
   const serverOptions = {
     static: {
       publicPath: url,
+    },
+    client: {
+      progress: true
     },
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
@@ -52,11 +49,9 @@ try{
     },
     ...devConfig,
   };
-
   const devServer = new WebpackDevServer(serverOptions, webpack(webpackConfig));
-
-  devServer.listen(devConfig.port, devConfig.host, () => {
-    console.log(chalk.green(`Server started on http://${devConfig.host}:${devConfig.port}, Please wait while webpack compiling modules...`));
+  devServer.start(devConfig.port, devConfig.host, () => {
+    console.log(chalk.green(`Server started on ${url}, Please wait while webpack compiling modules...`));
   });
 } catch(ex) {
   console.log(chalk.red(ex));
