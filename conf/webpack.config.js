@@ -36,9 +36,8 @@ module.exports = function (options = {}) {
       path: isProduction ? path.resolve('./dist') : undefined,
       filename: isProduction ? 'js/[name].[contenthash:10].js' : 'js/[name].js',
       chunkFilename: isProduction ? 'js/[name].chunk.[contenthash:10].js' : 'js/[name].chunk.js',
-      assetModuleFilename: isProduction ? 'media/[hash:10][ext][query]' : 'images/[hash][ext][query]',
+      assetModuleFilename: isProduction ? 'media/[hash:10][ext][query]' : 'media/[hash][ext][query]',
       clean: isProduction,
-      publicPath: ''
     },
     mode: isProduction ? 'production' : 'development',
     devtool: isProduction ? 'source-map' : 'cheap-module-source-map',

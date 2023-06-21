@@ -35,7 +35,10 @@ try{
       publicPath: url,
     },
     client: {
-      progress: true
+      logging: 'info', // 'log' | 'info' | 'warn' | 'error' | 'none' | 'verbose' 允许在浏览器中设置日志级别，例如在重载之前，在一个错误之前或者 热模块替换 启用时。
+      overlay: false, // boolean = true object: { errors boolean = true, warnings boolean = true } 当出现编译错误或警告时，在浏览器中显示全屏覆盖。
+      progress: false, // boolean 在浏览器中以百分比显示编译进度。
+      reconnect: false, // 告诉 dev-server 它应该尝试重新连接客户端的次数。当为 true 时，它将无限次尝试重新连接。
     },
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
