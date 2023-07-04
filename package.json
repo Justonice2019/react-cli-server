@@ -1,6 +1,6 @@
 {
   "name": "@justonice/react-cli-server",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "justonice的React server 工具",
   "repository": {
     "type": "git",
@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/Justonice2019/react-cli-server/issues"
   },
+  "files": [
+    "conf/"
+  ],
   "homepage": "https://github.com/Justonice2019/react-cli-server#readme",
   "bin": {
     "react-cli-server": "./bin/react-cli-server.js"
